@@ -72,10 +72,10 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 
 4. **Run-Test**:
   - Execute front-end and back-end tests using
-   # For back-end
+   **For back-end**
 python manage.py test
 
-  # For front-end (React.js)
+**For front-end (React.js)**
   npm test
 
 ## **Usage Instructions**
@@ -83,20 +83,20 @@ python manage.py test
 
 - Sign in or create a new account to access the system.
 
-## **Upload a Document**:
+ **Upload a Document**:
 
 - Select a document to upload in supported formats (PDF, JPEG, PNG).
 
-## **Create and Customize Stamps**:
+**Create and Customize Stamps**:
 
 - Navigate to the stamp creation section to design your stamp.
 - Save the stamp to your "My Stamps" library.
 
-## **Apply Stamps to the Document**:
+ **Apply Stamps to the Document**:
 
 - Open the uploaded document in the interactive canvas.
 - Drag and drop or click to place the stamp where needed.
-## **Save or Download**:
+ **Save or Download**:
 
 - Save the stamped document to your account or download it directly.
 
