@@ -96,6 +96,7 @@ python manage.py test
 
 - Open the uploaded document in the interactive canvas.
 - Drag and drop or click to place the stamp where needed.
+
  **Save or Download**:
 
 - Save the stamped document to your account or download it directly.
