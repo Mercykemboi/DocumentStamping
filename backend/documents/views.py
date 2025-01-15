@@ -7,8 +7,8 @@ from .models import Document
 from .serializers import DocumentSerializer
 from rest_framework.permissions import AllowAny
 class UploadDocumentView(APIView):
-   # permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
 
     def post(self, request):
         # Check if a file is included in the request
@@ -26,24 +26,16 @@ class UploadDocumentView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+
 class DocumentDetailView(APIView):
-    def post(self, request):
-        # Ensure the file exists in the request
-        print("Files in request:", request.FILES)
-        file = request.FILES.get('file')
-        print("Files in request:")
-
-
-        if not file:
-            return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Save the file
-        document = Document(file=file, user=request.user)
-        document.save()
-
-        # Serialize the document instance and return response
-        serializer = DocumentSerializer(document)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get(self, request, pk):
+        try:
+            # Retrieve the document by ID (pk) for the authenticated user
+            document = Document.objects.get(pk=pk, user=request.user)
+            serializer = DocumentSerializer(document)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Document.DoesNotExist:
+            return Response({"error": "Document not found"}, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, pk):
         try:
@@ -53,9 +45,10 @@ class DocumentDetailView(APIView):
         except Document.DoesNotExist:
             return Response({"error": "Document not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
 class StampDocumentView(APIView):
-    permission_classes = [AllowAny]
-    #permission_classes = [IsAuthenticated]
+    #permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
         try:
