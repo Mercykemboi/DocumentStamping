@@ -7,8 +7,8 @@ from .models import Document
 from .serializers import DocumentSerializer
 from rest_framework.permissions import AllowAny
 class UploadDocumentView(APIView):
-    permission_classes = [IsAuthenticated]
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         # Check if a file is included in the request
