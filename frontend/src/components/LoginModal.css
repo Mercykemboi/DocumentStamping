@@ -1,0 +1,48 @@
+.login-modal {
+    position: absolute;
+    top: 20%;
+    left: 35%; /* Moves login form inside the image */
+    background-color: #e3f2fd;
+    padding: 2rem;
+    width: 350px; /* Increase width */
+    height: 400px;
+    
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Ensure it appears on top */
+    opacity: 0.95; /* Slight transparency */
+  }  
+  
+  .login-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Increase spacing */
+  }
+  
+  .login-content input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .btn-login {
+    background-color: #5b6ef5;
+    color: white;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-close {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

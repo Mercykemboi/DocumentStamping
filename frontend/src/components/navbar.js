@@ -1,89 +1,43 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-
-// function Navbar() {
-//   return (
-//     <nav style={styles.nav}>
-//       <h1 style={styles.logo}>Document Stamping</h1>
-//       <ul style={styles.navLinks}>
-//       <li>
-//           <Link to="/register" style={styles.link}>About Us</Link>
-//         </li>
-//         <li>
-//           <Link to="/register" style={styles.link}>Contact Us</Link>
-//         </li>
-//         <li>
-//           <Link to="/register" style={styles.link}>Register</Link>
-//         </li>
-//         <li>
-//           <Link to="/login" style={styles.link}>Login</Link>
-//         </li>
-//       </ul>
-//     </nav>
-//   );
-// }
-
-// const styles = {
-//   nav: {
-//     display: "flex",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     padding: "1rem",
-//     backgroundColor: "#007BFF",
-//     color: "#FFF",
-//   },
-//   logo: { margin: 0 },
-//   navLinks: { listStyle: "none", display: "flex", gap: "1rem", margin: 0, padding: 0 },
-//   link: { color: "#FFF", textDecoration: "none" },
-// };
-
-// export default Navbar;
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "./Navbar.css";
 
-function Navbar() {
+const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
-    <nav style={styles.nav}>
-      <h1 style={styles.logo}>Document Stamping</h1>
-      <ul style={styles.navLinks}>
-        <li>
-          <Link to="/about-us" style={styles.link}>About Us</Link> {/* Change link to appropriate route */}
-        </li>
-        <li>
-          <Link to="/contact-us" style={styles.link}>Contact Us</Link> {/* Change link to appropriate route */}
-        </li>
-        <li>
-          <Link to="/register" style={styles.link}>Register</Link>
-        </li>
-        <li>
-          <Link to="/login" style={styles.link}>Login</Link>
-        </li>
-      </ul>
+    <nav className="navbar">
+      <div className="navbar-brand" onClick={() => navigate("/")}>
+        Document Stamping
+      </div>
+
+      <div className="navbar-menu-container">
+        <ul className="navbar-menu">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+          <a href="#about-us">About Us</a>
+          </li>
+          <li>
+          <a href="#services">Services</a>
+          </li>
+          <li>
+          <a href="#contact-us">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+
+      <div className="auth-buttons">
+        <button className="btn-register" onClick={() => navigate("/register")}>
+          Register
+        </button>
+        <button className="btn-login" onClick={() => navigate("/login")}>
+          Login
+        </button>
+      </div>
     </nav>
   );
-}
-
-const styles = {
-  nav: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "1rem",
-    backgroundColor: "#007BFF",
-    color: "#FFF",
-  },
-  logo: { margin: 0 },
-  navLinks: { 
-    listStyle: "none", 
-    display: "flex", 
-    gap: "3rem", // Adjust this value to control the spacing between links
-    margin: 0, 
-    padding: 0 
-  },
-  link: { 
-    color: "#FFF", 
-    textDecoration: "none" 
-  },
 };
 
 export default Navbar;
