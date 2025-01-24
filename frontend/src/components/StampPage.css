@@ -1,0 +1,68 @@
+.stamp-designer {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.stamp-designer h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.stamp-form-group {
+  margin-bottom: 15px;
+}
+
+.stamp-form-group label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.stamp-form-group input[type="text"],
+.stamp-form-group input[type="number"],
+.stamp-form-group input[type="color"] {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.stamp-preview {
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.stamp-preview canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.stamp-button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.stamp-button:hover {
+  background-color: #0056b3;
+}

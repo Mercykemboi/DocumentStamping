@@ -1,20 +1,12 @@
 import React from "react";
+import "./footer.css";
 
-function Footer() {
+const Footer = () => {
   return (
-    <footer style={styles.footer}>
-      <p>© 2025 DocStamp. All rights reserved.</p>
+    <footer className="footer">
+      <p>© 2025 Document Stamping. All Rights Reserved.</p>
     </footer>
   );
-}
-
-const styles = {
-  footer: {
-    textAlign: "center",
-    padding: "1rem",
-    backgroundColor: "#f1f1f1",
-    marginTop: "2rem",
-  },
 };
 
 export default Footer;

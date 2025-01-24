@@ -1,0 +1,104 @@
+body
+{
+  color: #4c5282;
+}
+
+.register-modal {
+  position: absolute;
+  top: 17%;
+  left: 35%; /* Center the modal */
+  background-color: #e3f2fd; /* Gradient background */
+  padding: 2rem;
+  width: 350px; /* Increase width */
+  height: 480px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+  z-index: 10; /* Ensure it appears on top */
+  opacity: 0.95; /* Slight transparency */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* Increase spacing */
+  width: 100%;
+}
+
+.register-content input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  background-color: #ffffff;
+  margin: 5px 0;
+}
+
+.btn-register {
+  background-color: #5b6ef5;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #4a57f3; /* Darker shade on hover */
+}
+
+.btn-close {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 0.4rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-close:hover {
+  background-color: #d43f3f; /* Darker shade on hover */
+}
+
+/* Add animation for the modal's appearance */
+.register-modal {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message {
+  color: #ff6347;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.btn-login-redirect {
+  background-color: transparent;
+  color: #5b6ef5;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-login-redirect:hover {
+  color: #2575fc;
+}
