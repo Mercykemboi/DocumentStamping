@@ -63,8 +63,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',  # Enforces authentication globally
     ],
+    
 }
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend URL
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 
 ROOT_URLCONF = 'backend.urls'
@@ -98,11 +104,6 @@ DATABASES = {
     }
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Your frontend URL
-]
-
-CORS_ALLOW_CREDENTIALS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -148,5 +149,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_URL = '/media/'  # The URL prefix to access media files
+MEDIA_ROOT = BASE_DIR / 'media'  # The file system path where media files will be stored
+
+
