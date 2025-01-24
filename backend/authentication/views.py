@@ -28,7 +28,7 @@ from .serializers import UserSerializer
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
-
+    print("Files in request:")
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -37,7 +37,9 @@ class RegisterView(APIView):
 
             # Authenticate the newly registered user
             user = authenticate(username=user.username, password=request.data['password'])
-            
+            print("Files in request:", request.FILES)
+            print("Data in request:", request.data)
+            print("User in request:", request.user)
             if user:
                 # Generate the refresh and access tokens for the user
                 refresh = RefreshToken.for_user(user)
