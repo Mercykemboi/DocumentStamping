@@ -1,104 +1,168 @@
-body
-{
-  color: #4c5282;
+/* Ensure no scrolling on the body */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;  /* Prevent scrolling */
 }
 
-.register-modal {
-  position: absolute;
-  top: 17%;
-  left: 35%; /* Center the modal */
-  background-color: #e3f2fd; /* Gradient background */
-  padding: 2rem;
-  width: 350px; /* Increase width */
-  height: 480px;
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow */
-  z-index: 10; /* Ensure it appears on top */
-  opacity: 0.95; /* Slight transparency */
+/* Parent Container */
+.register-container {
+  display: flex;
+  height: 100vh;  
+  background: linear-gradient(to right, #fafafa, #eef2f3);
+  overflow: hidden;  /* Prevent scrolling within the container */
+}
+
+/* Left Section */
+.register-info {
+  flex: 1;
+  background-image: url('../images/stamping.jpg'); /* Replace with the actual path to your image */
+  background-size: cover; /* Ensure the image covers the entire section */
+  background-position: center; /* Center the image */
+  padding: 2rem;  /* Reduced padding */
+  padding-left: 15px; /* Adjusted padding for consistency */
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 90%;
+
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;  /* Prevent content overflow */
+  background-repeat: no-repeat; /* Ensure no repeating of the image */
 }
 
-.register-content {
+
+.register-info h1 {
+  font-size: 2rem;  /* Reduced font size */
+  margin-bottom: 1rem;
+  margin-top: 20px;
+  color: #020204;
+}
+
+.register-info p {
+  font-size: 1rem;  /* Reduced font size */
+  margin-bottom: 1.5rem;
+  color: #000000;
+}
+
+.testimonial {
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow: hidden;  /* Prevent testimonial content from overflowing */
+}
+
+.testimonial span {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Right Section */
+.register-form {
+  flex: 0.5;  /* Reduced width of the form */
+  background-color: #eef4ff;
+  padding: 2rem;  /* Reduced padding */
   display: flex;
   flex-direction: column;
-  gap: 1.2rem; /* Increase spacing */
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 50%;  /* Adjusted width */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;  /* Prevent form overflow */
 }
 
-.register-content input {
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
+.register-form h2 {
+  font-size: 1.8rem;  /* Reduced font size */
+  margin-bottom: 1.5rem;
+}
+
+.role-toggle {
+  display: flex;
+  gap: 0.8rem;  /* Reduced gap */
+  margin-bottom: 1rem;  /* Reduced margin */
+}
+
+.role-toggle button {
+  flex: 1;
+  padding: 0.6rem;  /* Reduced padding */
+  font-size: 0.9rem;  /* Reduced font size */
+  background: none;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  width: 100%;
-  background-color: #ffffff;
-  margin: 5px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.btn-register {
+.role-toggle button.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.register-form input {
+  background-color: #eef4ff;
+  width: 70%;
+  padding: 0.90rem;
+  margin: 0.5rem 0;
+  border: 1px solid #080808;
+  border-radius: 100px;
+  font-size: 1rem;
+}
+
+.privacy-policy {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  font-size: 0.85rem;  /* Reduced font size */
+}
+
+.privacy-policy input {
+  margin-right: 0.5rem;
+  width: 50px;
+}
+
+.register-btn {
   background-color: #5b6ef5;
-  color: white;
-  padding: 0.75rem;
-  font-size: 1rem;
+  color: black;
+  padding: 0.75rem 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.btn-register:hover {
-  background-color: #4a57f3; /* Darker shade on hover */
-}
-
-.btn-close {
-  background-color: #ff4d4d;
-  color: white;
-  padding: 0.4rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-close:hover {
-  background-color: #d43f3f; /* Darker shade on hover */
-}
-
-/* Add animation for the modal's appearance */
-.register-modal {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.register-btn:hover {
+  background-color: #eef4ff;
 }
 
 .message {
-  color: #ff6347;
-  font-size: 1rem;
+  color: black;
+  margin: 1rem 0;
   text-align: center;
-  margin-top: 10px;
 }
 
-.btn-login-redirect {
-  background-color: transparent;
-  color: #5b6ef5;
-  font-weight: 600;
+.register-form p {
+  font-size: 0.85rem;  /* Reduced font size */
+}
+
+.register-form p button {
+  background: none;
+  background-color: #eef4ff;
   border: none;
   cursor: pointer;
+  font-weight: bold;
   text-decoration: underline;
 }
 
-.btn-login-redirect:hover {
-  color: #2575fc;
+/* Register Logo */
+.register-logo {
+  width: 90px; /* Adjust the size to be smaller */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 1.5rem; /* Reduce space below logo */
 }
