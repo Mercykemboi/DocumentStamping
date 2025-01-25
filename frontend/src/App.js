@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/navbar";
-import Hero from "./components/Hero";
+import HomePage from "./components/Homepage";
 import Footer from "./components/Footer";
 import Dashboard from "./components/dashboard";
 import DocumentView from "./components/viewDoc";
@@ -29,7 +29,7 @@ const App = () => {
           element={
             <>
               <Navbar />
-              <Hero />
+              <HomePage />
               <Footer />
             </>
           }

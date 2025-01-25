@@ -1,0 +1,174 @@
+/* Overall Hero Section Styling */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 56%;
+
+   /* Ensure the hero section takes full height of the viewport */
+  padding: 0 5rem; /* Add padding for spacing */
+  /* background-color: #eef4ff; */
+}
+
+/* Hero Text Styling */
+.hero-text {
+  max-width: 50%; /* Restrict text to 50% width */
+  text-align: left;
+}
+
+/* Hero Heading */
+.hero-text h1 {
+  font-size: 3rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+/* Hero Paragraph */
+.hero-text p {
+  font-size: 1.25rem;
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 1.5rem;
+}
+
+/* Hero Button Styling */
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary,
+.btn-outline-primary {
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #5b6ef5;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #4b56c0;
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+  color: #5b6ef5;
+  border: 2px solid #5b6ef5;
+}
+
+.btn-outline-primary:hover {
+  background-color: #5b6ef5;
+  color: white;
+}
+
+/* Hero Image Styling */
+.hero-image {
+  flex-basis: 50%; /* Restrict image to 50% width */
+  max-width: 50%;
+  text-align: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Services Section */
+.services {
+  background-color: #f4f4f4;
+  padding: 40px 0;
+ margin-top: 40px;
+  text-align: center;
+}
+
+.services h2 {
+  font-size: 2rem;
+  color: #5b6ef5;
+  margin-bottom: 4rem;
+}
+
+.services p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.services-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+}
+
+/* Service Cards */
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.card-text {
+  color: #777;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    height: auto; /* Remove full viewport height on smaller screens */
+  }
+
+  .hero-text {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .hero-image {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn-primary,
+  .btn-outline-primary {
+    width: 100%;
+    padding: 1rem;
+  }
+}
