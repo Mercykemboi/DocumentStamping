@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "./LoginModal.css";
+import Logo from "../images/Logo.png";
 
 const LoginModal = ({ closeModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -16,7 +17,7 @@ const LoginModal = ({ closeModal }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username, // Ensure backend accepts this field name
+          username,
           password,
         }),
       });
@@ -25,15 +26,11 @@ const LoginModal = ({ closeModal }) => {
 
       if (response.ok) {
         setMessage("Login successful!");
-        // Save the authentication token in localStorage
-        localStorage.setItem("authToken", data.access); // Save the access token
+        localStorage.setItem("authToken", data.access);
         localStorage.setItem("refreshToken", data.refresh);
         localStorage.setItem("username", username);
-        console.log(username);
-        
-        // Redirect to dashboard after successful login
         navigate("/dashboard");
-        closeModal(); // Close the modal on success
+        closeModal();
       } else {
         setMessage(data.message || "Login failed. Please try again.");
       }
@@ -48,10 +45,20 @@ const LoginModal = ({ closeModal }) => {
   };
 
   return (
-   
-    <div className="login-modal">
-      <div className="login-content">
-        <h2>Login</h2>
+    <div className="login-container">
+      <div className="login-info">
+        <h1>Digital Stamping System</h1>
+        <p>Access your digital stamps and manage your business efficiently!</p>
+      </div>
+
+      <div className="login-form">
+        {/* Logo */}
+        <img
+          src={Logo} // Replace with the actual path to your logo
+          alt="Logo"
+          className="register-logo"
+        />
+        <h2>Login To Your Account</h2>
         <input
           type="text"
           placeholder="Username"
@@ -64,16 +71,17 @@ const LoginModal = ({ closeModal }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {message && <p className="message">{message}</p>}
         <button className="btn-login" onClick={handleLogin}>
           Login
         </button>
-        {message && <p className="message">{message}</p>}
-        {/* <button className="btn-close" onClick={closeModal}>
-          Close
-        </button> */}
-         <button className="btn-back-to-home" onClick={handleBackToHome}>
+        <button className="btn-back-to-home" onClick={handleBackToHome}>
           Back to Home
         </button>
+        <p>
+          Don't have an account?{" "}
+          <button onClick={() => navigate("/register")}>Sign Up</button>
+        </p>
       </div>
     </div>
   );
