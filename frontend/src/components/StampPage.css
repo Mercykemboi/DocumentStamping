@@ -1,19 +1,23 @@
+/* Container Styling */
 .stamp-designer {
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 10px;
-  max-width: 400px;
-  margin: 0 auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fefefe;
+  font-family: Arial, sans-serif;
 }
 
 .stamp-designer h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 15px;
+  color: #444;
+  font-size: 1.5rem;
 }
 
+/* Form Groups */
 .stamp-form-group {
   margin-bottom: 15px;
 }
@@ -21,7 +25,8 @@
 .stamp-form-group label {
   display: block;
   font-size: 14px;
-  color: #555;
+  font-weight: bold;
+  color: #333;
   margin-bottom: 5px;
 }
 
@@ -29,38 +34,43 @@
 .stamp-form-group input[type="number"],
 .stamp-form-group input[type="color"] {
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   box-sizing: border-box;
+  transition: border-color 0.3s;
 }
 
-.stamp-preview {
-  margin-top: 20px;
-  padding: 20px;
-  text-align: center;
-  border: 1px dashed #ccc;
-  border-radius: 10px;
-  background-color: #fff;
+.stamp-form-group input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
-.stamp-preview canvas {
-  max-width: 100%;
-  height: auto;
+/* Color Preview */
+.color-preview {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  vertical-align: middle;
 }
 
+/* Button */
 .stamp-button {
   display: block;
   width: 100%;
-  padding: 10px 15px;
+  padding: 12px 15px;
   font-size: 16px;
+  font-weight: bold;
   color: #fff;
   background-color: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .stamp-button:hover {
