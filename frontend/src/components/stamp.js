@@ -13,55 +13,70 @@ const StampDesigner = ({ onDesignUpdate }) => {
   };
 
   return (
-    <div style={{ marginBottom: "20px", textAlign: "center" }}>
-      <h3>Design Your Stamp</h3>
-      <label>
-        Text:{" "}
+    <div className="stamp-designer">
+      <h2>Design Your Stamp</h2>
+      <div className="stamp-form-group">
+        <label>Text:</label>
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-      </label>
-      <br />
-      <label>
-        Font Size:{" "}
+      </div>
+      <div className="stamp-form-group">
+        <label>Font Size:</label>
         <input
           type="number"
           value={fontSize}
           onChange={(e) => setFontSize(parseInt(e.target.value))}
           min="10"
         />
-      </label>
-      <br />
-      <label>
-        Font Color:{" "}
+      </div>
+      <div className="stamp-form-group">
+        <label>
+          Font Color:{" "}
+          <span
+            className="color-preview"
+            style={{ backgroundColor: fontColor }}
+          ></span>
+        </label>
         <input
           type="color"
           value={fontColor}
           onChange={(e) => setFontColor(e.target.value)}
         />
-      </label>
-      <br />
-      <label>
-        Background Color:{" "}
+      </div>
+      <div className="stamp-form-group">
+        <label>
+          Background Color:{" "}
+          <span
+            className="color-preview"
+            style={{ backgroundColor: backgroundColor }}
+          ></span>
+        </label>
         <input
           type="color"
           value={backgroundColor}
           onChange={(e) => setBackgroundColor(e.target.value)}
         />
-      </label>
-      <br />
-      <label>
-        Border Color:{" "}
+      </div>
+      <div className="stamp-form-group">
+        <label>
+          Border Color:{" "}
+          <span
+            className="color-preview"
+            style={{ backgroundColor: borderColor }}
+          ></span>
+        </label>
         <input
           type="color"
           value={borderColor}
           onChange={(e) => setBorderColor(e.target.value)}
         />
-      </label>
-      <br />
-      <button onClick={handleUpdate}>Apply Design</button>
+      </div>
+      <button className="stamp-button" onClick={handleUpdate}>
+        Apply Design
+      </button>
     </div>
   );
 };
