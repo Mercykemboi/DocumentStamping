@@ -102,6 +102,9 @@ const Dashboard = () => {
   const handleView = async (documentId) => {
     navigate(`/document/${documentId}`);
 };
+const handleStamp  = () => {
+  navigate(`/stamp/`);
+};
 
   return (
     <div className="dashboard-container">
@@ -109,8 +112,12 @@ const Dashboard = () => {
         <div className="logo">Digital Stamping System</div>
         <nav className="menu">
           <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-          <button onClick={() => navigate("/documents")}>Documents</button>
-          <button onClick={() => navigate("/new-document")}>New Document</button>
+          <button  onClick={fetchDocuments}>
+          Documents
+        </button>
+          <button  onClick={handleStamp}>
+          Create Stamp
+        </button>
           <button onClick={() => navigate("/document-set")}>Document Set</button>
         </nav>
       </aside>
