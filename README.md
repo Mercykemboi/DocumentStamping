@@ -31,7 +31,7 @@ The Digital Stamping System is a robust, user-friendly web application designed 
 ## **Tech Stack**
 - **Front-End**: 
   - React.js
-  - Tailwind CSS / Material-UI
+  - Bootsrap CSS / Material-UI
   - Canvas rendering libraries (e.g., Fabric.js, Konva.js)
 - **Back-End**: 
   - Django
