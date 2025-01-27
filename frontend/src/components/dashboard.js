@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { data, useNavigate } from "react-router-dom";
 import "./dashboard.css";
 
@@ -10,6 +10,8 @@ const Dashboard = () => {
   const [documents, setDocuments] = useState([]);
   const navigate = useNavigate();
   const [uploadStatus, setUploadStatus] = useState("");
+  const canvasRef = useRef(null);
+
 
   const fetchDocuments = async () => {
     try {
@@ -106,6 +108,37 @@ const handleStamp  = () => {
   navigate(`/stamp/`);
 };
 
+const handleDownload = async (documentId) => {
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/auth/documents/${documentId}/stamped/download/`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to download stamped document");
+    }
+
+    // Trigger file download
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'stamped-document.png';  // Use the correct file extension
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error("Error downloading stamped document:", error);
+  }
+};
+
+
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
@@ -115,17 +148,14 @@ const handleStamp  = () => {
           <button  onClick={fetchDocuments}>
           Documents
         </button>
-          <button  onClick={handleStamp}>
-          Create Stamp
-        </button>
-          <button onClick={() => navigate("/document-set")}>Document Set</button>
+        <button onClick={() => navigate("/")}>Home</button>
         </nav>
       </aside>
 
       <main className="main-content">
         <header className="dashboard-header">
           <div>
-            <h1>Dashboard</h1>
+            {/* <h1>Dashboard</h1> */}
             <p>Hello, {savedUsername}!</p>
           </div>
           <button className="logout-btn" onClick={handleLogout}>Logout</button>
@@ -180,6 +210,13 @@ const handleStamp  = () => {
               >
                 View
               </button>
+              <button
+  onClick={() => handleDownload()}  // Add () here to invoke the function
+  style={{ marginRight: "10px" }}
+>
+  Download
+</button>
+
                       <button onClick={() => handleDelete(doc.id)}>Delete</button>
                     </td>
                   </tr>

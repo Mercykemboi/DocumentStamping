@@ -17,7 +17,8 @@ html, body {
 /* Left Section */
 .register-info {
   flex: 1;
-  background-image: url('../images/stamping.jpg'); /* Replace with the actual path to your image */
+  background-image: url('../images/DocumentStamp.jpg');
+   /* Replace with the actual path to your image */
   background-size: cover; /* Ensure the image covers the entire section */
   background-position: center; /* Center the image */
   padding: 2rem;  /* Reduced padding */

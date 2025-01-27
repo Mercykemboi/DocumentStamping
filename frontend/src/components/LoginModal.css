@@ -7,18 +7,23 @@
 
 .login-info {
   flex: 1;
-  background-color: #1865f4;
-  padding: 2rem;
-  padding-left: 15px;
+  background-image: url('../images/DocumentStamp.jpg');
+   /* Replace with the actual path to your image */
+  background-size: cover; /* Ensure the image covers the entire section */
+  background-position: center; /* Center the image */
+  padding: 2rem;  /* Reduced padding */
+  padding-left: 15px; /* Adjusted padding for consistency */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 90%;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
 
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;  /* Prevent content overflow */
+  background-repeat: no-repeat; /* Ensure no repeating of the image */
+}
 .login-info h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -88,8 +93,11 @@
 .btn-login {
   background-color: #5b6ef5;
   color: black;
-  padding: 0.2rem 1rem;
+  padding: 0.75rem 5rem;
   border: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
