@@ -1,43 +1,79 @@
+/* General reset */
 body, html {
-  overflow: hidden;
+  margin: 0;
+  padding: 0;
   height: 100%;
-}
-.document-viewer-container {
   display: flex;
-   /* Side-by-side layout */
-  flex-direction: row;
-  height: 100%; /* Full viewport height */
-  overflow: hidden;
-   /* Prevent overflowing */
-   object-fit: cover;
+  justify-content: center; /* Center the card horizontally */
+  align-items: center; /* Center the card vertically */
+  background-color: #f8f9fa; /* Light background for contrast */
 }
 
+/* Card container styling */
+.document-viewer-card {
+  display: flex;
+  flex-direction: row;
+  width: 90%; /* Card width */
+  max-width: 1200px; /* Maximum width for larger screens */
+  height: 90vh; /* Card height */
+  background: #ffffff; /* Card background */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden; /* Clip content that overflows */
+}
+
+/* Flex container for side-by-side layout */
+.document-viewer-container {
+  display: flex;
+  flex-direction: row; /* Ensure they are side by side */
+  height: 100%;
+}
+
+/* Sidebar styling */
 .sidebar {
-  flex: 1; /* Sidebar takes 1/4th of the width */
+  flex: 1; /* Sidebar takes up 1/4th of the space */
   background-color: #f4f4f4;
   padding: 20px;
   border-right: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
+/* Canvas container styling */
 .canvas-container {
-  flex: 6; 
-  /* Document Viewer takes remaining space */
+  flex: 3; /* Canvas takes up 3/4ths of the space */
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto; 
-  /* Enable scrolling for large images */
+  overflow: auto; /* Enable scrolling for large documents */
   background-color: #ffffff;
+  padding: 10px; /* Add padding for better alignment */
 }
 
+/* Canvas element styling */
 .document-canvas {
   border: 1px solid #ccc;
-  max-width: 95%; 
-  /* Scales down to fit width */
-  max-height: 90%;
-   /* Scales down to fit height */
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain; /* Maintain aspect ratio */
+}
+.save-button {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
 }

@@ -151,26 +151,31 @@ const DocumentViewer = () => {
   };
 
   return (
+    <div className="document-viewer-card">
+  <div className="document-viewer-container">
+    {/* Sidebar for Stamp Designer */}
+    <div className="stamp-designer">
+      <h2>Stamp Designer</h2>
+      <StampDesigner onDesignUpdate={setStampConfig} />
     
-    <div className="document-viewer-container">
-      <div className="sidebar">
-      <h1>Stamp Designer</h1>
-        <StampDesigner onDesignUpdate={setStampConfig} />
-        <button className="save-button" onClick={handleSave}>
-          Save Stamped Document
-        </button>
-        <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
-      </div>
-      <div
-        className="canvas-container"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      >
-        <canvas ref={canvasRef} className="document-canvas"></canvas>
-      </div>
+      <button className="save-button" onClick={handleSave}>
+        Save Stamped Document
+      </button>
+      <button className = "save-button" onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
+      
     </div>
+
+    {/* Canvas for Document Viewer */}
+    <div className="canvas-container"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}>
+      <canvas ref={canvasRef} className="document-canvas"></canvas>
+    </div>
+  </div>
+</div>
+
   );
 };
 
