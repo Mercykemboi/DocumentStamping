@@ -6,6 +6,7 @@ const HomePage = () => {
   return (
     <div>
       {/* Hero Section */}
+      
       <div className="container hero py-5">
         <div className="row align-items-center">
           {/* Hero Text - Left Side */}
@@ -13,13 +14,16 @@ const HomePage = () => {
             <h1 className="display-4 mb-4">
               Document Stamping: The Future of Authentication
             </h1>
+            
             <p className="lead mb-4">
               The Digital Stamping System is a cutting-edge solution designed to
               replace traditional physical stamps with an efficient, secure, and
               scalable platform for electronic document authentication. Whether
               you're an individual, small business, or large organization, our
               system makes document stamping fast, simple, and fully traceable.
+              
             </p>
+            
             <div className="hero-buttons">
               <button className="btn btn-primary me-3">Get Started</button>
               <button className="btn btn-outline-primary">Learn More</button>
@@ -27,19 +31,13 @@ const HomePage = () => {
           </div>
 
           {/* Hero Image - Right Side */}
-          <div className="col-lg-6 hero-image text-center">
-            {/* <img
-              src={stampingImage}
-              alt="Document Stamping Illustration"
-              className="img-fluid rounded-circle shadow-lg"
-              style={{
-                maxWidth: "70%", // Adjust the size of the image
-                height: "auto",  // Maintain aspect ratio
-              }}
-            /> */}
-          </div>
+         
+         
         </div>
+        
+       
       </div>
+      
 
       {/* Services Section */}
       <div className="services bg-light py-5" id="services">

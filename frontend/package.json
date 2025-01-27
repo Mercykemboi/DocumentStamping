@@ -6,18 +6,18 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.0",
+    "@react-pdf-viewer/core": "^3.12.0",
     "cra-template": "1.2.0",
     "fabric": "^6.5.4",
     "fabric-react": "^0.0.1",
     "konva": "^9.3.18",
-    "pdfjs-dist": "^4.10.38",
+    "pdfjs-dist": "^2.16.105",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-konva": "^19.0.2",
+    "react-pdf": "^9.2.1",
     "react-router-dom": "^7.1.3",
-    "react-scripts": "5.0.1",
-    "proxy": "http://127.0.0.1:8000"
-
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,5 +46,4 @@
   "devDependencies": {
     "web-vitals": "^4.2.4"
   }
-  
 }

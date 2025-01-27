@@ -1,13 +1,14 @@
 /* Overall Hero Section Styling */
 .hero {
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
   align-items: center;
   height: 56%;
-
-   /* Ensure the hero section takes full height of the viewport */
-  padding: 0 5rem; /* Add padding for spacing */
-  /* background-color: #eef4ff; */
+  margin-bottom: 200px;
+  margin-top: 50px;
+  padding: 0 5rem; 
+ 
+  /* Add padding for spacing */
 }
 
 /* Hero Text Styling */
@@ -16,12 +17,12 @@
   text-align: left;
 }
 
-/* Hero Heading */
 .hero-text h1 {
   font-size: 3rem;
   color: #333;
   font-weight: 600;
   margin-bottom: 2rem;
+  align-items: center;
 }
 
 /* Hero Paragraph */
@@ -30,6 +31,7 @@
   color: #555;
   line-height: 1.9;
   margin-bottom: 1.5rem;
+  align-items: center;
 }
 
 /* Hero Button Styling */
@@ -69,13 +71,13 @@
 
 /* Hero Image Styling */
 .hero-image {
-  flex-basis: 50%; /* Restrict image to 50% width */
-  max-width: 50%;
-  text-align: center;
+  width: 50%;
+  display: flex;
+  height: 50%;
 }
 
 .hero-image img {
-  max-width: 100%;
+  width: 50%;
   border-radius: 50%;
   object-fit: cover;
   transition: transform 0.3s ease;
@@ -97,6 +99,7 @@
   font-size: 2rem;
   color: #5b6ef5;
   margin-bottom: 4rem;
+  margin-top: 8rem;
 }
 
 .services p {
