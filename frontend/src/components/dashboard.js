@@ -104,41 +104,6 @@ const Dashboard = () => {
   const handleView = async (documentId) => {
     navigate(`/document/${documentId}`);
 };
-// const handleStamp  = () => {
-//   navigate(`/stamp/`);
-// };
-
-// const handleDownload = async (documentId) => {
-//   try {
-//     const response = await fetch(
-//       `http://127.0.0.1:8000/api/auth/documents/${documentId}/stamped/download/`,
-//       {
-//         method: 'GET',
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-//         },
-//       }
-//     );
-
-//     if (!response.ok) {
-//       throw new Error("Failed to download stamped document");
-//     }
-
-//     // Trigger file download
-//     const blob = await response.blob();
-//     const url = window.URL.createObjectURL(blob);
-//     const a = document.createElement('a');
-//     a.href = url;
-//     a.download = 'stamped-document.png';  // Use the correct file extension
-//     document.body.appendChild(a);
-//     a.click();
-//     document.body.removeChild(a);
-//   } catch (error) {
-//     console.error("Error downloading stamped document:", error);
-//   }
-// };
-
-
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
