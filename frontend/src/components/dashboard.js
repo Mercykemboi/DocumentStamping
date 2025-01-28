@@ -210,12 +210,7 @@ const handleDownload = async (documentId) => {
               >
                 View
               </button>
-              <button
-  onClick={() => handleDownload()}  // Add () here to invoke the function
-  style={{ marginRight: "10px" }}
->
-  Download
-</button>
+
 
                       <button onClick={() => handleDelete(doc.id)}>Delete</button>
                     </td>

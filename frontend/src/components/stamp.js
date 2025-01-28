@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./StampPage.css";
 
 const StampDesigner = ({ onDesignUpdate }) => {
-  const [text, setText] = useState("APPROVED");
+  const [text, setText] = useState("STAMP");
   const [fontSize, setFontSize] = useState(20);
   const [fontColor, setFontColor] = useState("#ffffff");
   const [backgroundColor, setBackgroundColor] = useState("rgba(255, 0, 0, 0.5)");
