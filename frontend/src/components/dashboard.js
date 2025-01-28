@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { data, useNavigate } from "react-router-dom";
 import "./dashboard.css";
 
@@ -9,8 +9,8 @@ const Dashboard = () => {
   const [stampedCount, setStampedCount] = useState(0);
   const [documents, setDocuments] = useState([]);
   const navigate = useNavigate();
-  const [uploadStatus, setUploadStatus] = useState("");
-  const canvasRef = useRef(null);
+  const [setUploadStatus] = useState("");
+  // const canvasRef = useRef(null);
 
 
   const fetchDocuments = async () => {
@@ -52,7 +52,7 @@ const Dashboard = () => {
       return;
     }
 
-    setUploadStatus("Uploading...");
+    // setUploadStatus("Uploading...");
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -68,14 +68,14 @@ const Dashboard = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setUploadStatus("File uploaded successfully!");
+        // setUploadStatus("File uploaded successfully!");
         setDocuments((prevDocs) => [data, ...prevDocs]);
       } else {
-        setUploadStatus("Failed to upload file.");
+        // setUploadStatus("Failed to upload file.");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      setUploadStatus("An error occurred while uploading the file.");
+      // setUploadStatus("An error occurred while uploading the file.");
     }
   };
 
@@ -104,39 +104,39 @@ const Dashboard = () => {
   const handleView = async (documentId) => {
     navigate(`/document/${documentId}`);
 };
-const handleStamp  = () => {
-  navigate(`/stamp/`);
-};
+// const handleStamp  = () => {
+//   navigate(`/stamp/`);
+// };
 
-const handleDownload = async (documentId) => {
-  try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/auth/documents/${documentId}/stamped/download/`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        },
-      }
-    );
+// const handleDownload = async (documentId) => {
+//   try {
+//     const response = await fetch(
+//       `http://127.0.0.1:8000/api/auth/documents/${documentId}/stamped/download/`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+//         },
+//       }
+//     );
 
-    if (!response.ok) {
-      throw new Error("Failed to download stamped document");
-    }
+//     if (!response.ok) {
+//       throw new Error("Failed to download stamped document");
+//     }
 
-    // Trigger file download
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'stamped-document.png';  // Use the correct file extension
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  } catch (error) {
-    console.error("Error downloading stamped document:", error);
-  }
-};
+//     // Trigger file download
+//     const blob = await response.blob();
+//     const url = window.URL.createObjectURL(blob);
+//     const a = document.createElement('a');
+//     a.href = url;
+//     a.download = 'stamped-document.png';  // Use the correct file extension
+//     document.body.appendChild(a);
+//     a.click();
+//     document.body.removeChild(a);
+//   } catch (error) {
+//     console.error("Error downloading stamped document:", error);
+//   }
+// };
 
 
   return (
