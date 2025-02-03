@@ -29,10 +29,10 @@ const Navbar = () => {
       </div>
 
       <div className="auth-buttons">
-        <button className="btn-register" onClick={() => navigate("/register")}>
+        <button className="btn-reg" onClick={() => navigate("/register")}>
           Register
         </button>
-        <button className="btn-login" onClick={() => navigate("/login")}>
+        <button className="btn-log" onClick={() => navigate("/login")}>
           Login
         </button>
       </div>

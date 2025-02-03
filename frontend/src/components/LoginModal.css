@@ -1,48 +1,127 @@
-.login-modal {
-    position: absolute;
-    top: 20%;
-    left: 35%; /* Moves login form inside the image */
-    background-color: #e3f2fd;
-    padding: 2rem;
-    width: 350px; /* Increase width */
-    height: 400px;
-    
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 10; /* Ensure it appears on top */
-    opacity: 0.95; /* Slight transparency */
-  }  
-  
-  .login-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem; /* Increase spacing */
-  }
-  
-  .login-content input {
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-  }
-  
-  .btn-login {
-    background-color: #5b6ef5;
-    color: white;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .btn-close {
-    background-color: #ff4d4d;
-    color: white;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+/* Modal Container */
+.login-container {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(to right, #fafafa, #eef2f3);
+}
+
+.login-info {
+  flex: 1;
+  background-image: url('../images/DocumentStamp.jpg');
+   /* Replace with the actual path to your image */
+  background-size: cover; /* Ensure the image covers the entire section */
+  background-position: center; /* Center the image */
+  padding: 2rem;  /* Reduced padding */
+  padding-left: 15px; /* Adjusted padding for consistency */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 90%;
+
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;  /* Prevent content overflow */
+  background-repeat: no-repeat; /* Ensure no repeating of the image */
+}
+.login-info h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  margin-top: 20px;
+}
+
+.login-info p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial {
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.testimonial span {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Right Section */
+.login-form {
+  flex: 0.5;
+  background-color: #eef4ff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 40%;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.login-form input {
+  background-color: #eef4ff;
+  width: 70%;
+  padding: 0.90rem;
+  margin: 0.5rem 0;
+  border: 1px solid #080808;
+  border-radius: 100px;
+  font-size: 1rem;
+}
+
+.privacy-policy {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+}
+
+.privacy-policy input {
+  margin-right: 0.5rem;
+  width: 50px;
+}
+
+.btn-login {
+  background-color: #5b6ef5;
+  color: black;
+  padding: 0.75rem 5rem;
+  border: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: #eef4ff;
+}
+
+.message {
+  color: black;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.login-form p {
+  font-size: 0.85rem;
+}
+
+.login-form p button {
+  background: none;
+  background-color: #eef4ff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
