@@ -114,6 +114,7 @@ const Dashboard = () => {
           Documents
         </button>
         <button onClick={() => navigate("/")}>Home</button>
+        <button onClick={() => navigate("/stamp")}>Create Stamp</button>
         </nav>
       </aside>
 
