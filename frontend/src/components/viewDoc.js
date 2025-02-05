@@ -11,7 +11,8 @@ const DocumentViewer = () => {
   const navigate = useNavigate();
   const canvasRef = useRef(null);
   const containerRef = useRef(null); 
-
+   
+  const [savedStamps, setSavedStamps] = useState([]);
   const [documentUrl, setDocumentUrl] = useState("");
   const [fileType, setFileType] = useState("");
   const [stampConfig, setStampConfig] = useState({
@@ -189,6 +190,65 @@ const DocumentViewer = () => {
     }
   };
 
+
+useEffect(() => {
+  const fetchStamps = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/stamps/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSavedStamps(data); // Assuming API returns an array of stamp objects with `image_url`
+      } else {
+        console.error("Failed to fetch stamps");
+      }
+    } catch (error) {
+      console.error("Error fetching stamps:", error);
+    }
+  };
+
+  fetchStamps();
+}, []);
+
+
+  // const applyStamp = (stampUrl) => {
+  //   const canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   const ctx = canvas.getContext("2d");
+  
+  //   const img = new Image();
+  //   img.crossOrigin = "anonymous";
+  //   img.src = stampUrl;
+  //   img.onload = () => {
+  //     ctx.drawImage(img, stampPosition.x, stampPosition.y, 150, 150); // Adjust size as needed
+  //   };
+  // };
+  const applyStamp = (stampUrl) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+  
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = stampUrl;
+  
+    img.onload = () => {
+      ctx.drawImage(img, stampPosition.x, stampPosition.y, 150, 150); // Adjust size if needed
+  
+      // Save stamp position in state for later saving
+      setSavedStamps((prevStamps) => [
+        ...prevStamps,
+        { url: stampUrl, x: stampPosition.x, y: stampPosition.y, width: 150, height: 150 },
+      ]);
+    };
+  };
+  
+  
+
   return (
     <div className="document-viewer-card">
       <div className="document-viewer-container">
@@ -202,7 +262,22 @@ const DocumentViewer = () => {
             Back to Dashboard
           </button>
         </div>
-
+  
+        <div className="saved-stamps">
+          <h3>Saved Stamps</h3>
+          <div className="stamps-list">
+            {savedStamps.map((stamp, index) => (
+              <img
+                key={index}
+                src={`http://127.0.0.1:8000${stamp.image_url}`}
+                alt={`Stamp ${index}`}
+                className="stamp-thumbnail"
+                onClick={() => applyStamp(`http://127.0.0.1:8000${stamp.image_url}`)}
+              />
+            ))}
+          </div>
+        </div>
+  
         <div
           ref={containerRef}
           className="canvas-container scrollable"
@@ -216,6 +291,7 @@ const DocumentViewer = () => {
       </div>
     </div>
   );
+  
 };
 
 export default DocumentViewer;
