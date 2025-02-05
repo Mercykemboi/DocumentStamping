@@ -29,6 +29,7 @@ const LoginModal = ({ closeModal }) => {
         localStorage.setItem("authToken", data.access);
         localStorage.setItem("refreshToken", data.refresh);
         localStorage.setItem("username", username);
+        console.log(data.access);
         navigate("/dashboard");
         closeModal();
       } else {

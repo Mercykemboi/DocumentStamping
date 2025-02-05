@@ -1,14 +1,13 @@
+# from django.urls import path
+# from .views import (
+#     StampListCreateView,
+#     StampDetailView,
+#     SaveStampView,  # Function-based view for saving stamps
+#     GetStampsView   # Function-based view for fetching stamps
 from django.urls import path
-from .views import (
-    StampListCreateView,
-    StampDetailView,
-    SaveStampView,  # Function-based view for saving stamps
-    GetStampsView   # Function-based view for fetching stamps
-)
+from .views import CreateStampView, ListStampsView
 
 urlpatterns = [
-    path("stamps/", StampListCreateView.as_view(), name="stamp-list-create"),
-    path("stamps/<int:pk>/", StampDetailView.as_view(), name="stamp-detail"),
-    path("stamps/save/", SaveStampView.as_view(), name="save-stamp"),  # Save a new stamp
-    path("stamps/all/", GetStampsView.as_view(), name="get-stamps"),  # Get all stamps as JSON
+    path('stamps/create/', CreateStampView.as_view(), name='create-stamp'),
+    path('stamps/', ListStampsView.as_view(), name='list-stamps'),
 ]

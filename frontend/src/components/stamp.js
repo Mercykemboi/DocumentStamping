@@ -1,12 +1,12 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { fabric } from "fabric";
 import QRCode from "qrcode";
 import "./StampEditor.css";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const StampPage = () => {
   const navigate = useNavigate();
+  const storage = localStorage.getItem("authToken");
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [shapeSettings, setShapeSettings] = useState({
@@ -103,79 +103,85 @@ const StampPage = () => {
       });
     });
   };
-
-    const saveStamp = async () => {
-      if (!canvas) return;
-    
-      // Convert the canvas to a base64 image (PNG format)
-      const base64Image = canvas.toDataURL("image/png");
-    
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/auth/stamps/save/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-          body: JSON.stringify({ image: base64Image }),
-        });
-    
-        if (response.ok) {
-          console.log("Stamp saved successfully!");
-          fetchStamps(); // Refresh stamp list after saving
-        } else {
-          console.error("Failed to save stamp.");
-        }
-      } catch (error) {
-        console.error("Error saving stamp:", error);
-      }
-    };
-
-    const fetchStamps = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/auth/stamps/all/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-    
-        if (response.ok) {
-          const data = await response.json();
-          setSavedStamps(data);
-        } else {
-          console.error("Failed to fetch stamps.");
-        }
-      } catch (error) {
-        console.error("Error fetching stamps:", error);
-      }
-    };
-    
-    // Fetch stamps when the component mounts
-    // useEffect(() => {
-    //   fetchStamps();
-    // }, []);
-    
-    
+  const saveStamp = async () => {
+    if (!canvas) return;
   
-  //Load stamps from backend
+    const base64Image = canvas.toDataURL("image/png");
+    const formData = new FormData();
+  
+    // Appending form data
+    formData.append("name", `Stamp_${Date.now()}`);
+    formData.append("shape", shapeSettings.shape);
+    formData.append("text", textSettings.text);
+    formData.append("text_x", 120);
+    formData.append("text_y", 150);
+    
+    // Convert the base64 image to a Blob
+    const imageBlob = dataURLToBlob(base64Image);
+    formData.append("image", imageBlob, "stamp.png");
+
+    console.log(formData);
+  
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/stamps/create/", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${storage}`,
+        },
+        body: formData,
+      });
+  
+      if (response.ok) {
+        console.log("Stamp saved successfully!");
+        fetchStamps(); // Refresh stamp list after saving
+      } else {
+        console.error("Failed to save stamp.");
+      }
+    } catch (error) {
+      console.error("Error saving stamp:", error);
+    }
+  };
+  
+  // Helper function to convert base64 to Blob
+  const dataURLToBlob = (dataURL) => {
+    const byteString = atob(dataURL.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const view = new Uint8Array(arrayBuffer);
+    
+    for (let i = 0; i < byteString.length; i++) {
+      view[i] = byteString.charCodeAt(i);
+    }
+    
+    return new Blob([view], { type: 'image/png' });
+  };
+  
+  const fetchStamps = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/stamps/", {
+        headers: {
+          "Authorization": `Bearer ${storage}`,
+        },
+      });
+      console.log(storage);
+
+      if (response.ok) {
+        const data = await response.json();
+        setSavedStamps(data);
+      } else {
+        console.error("Failed to fetch stamps.");
+      }
+    } catch (error) {
+      console.error("Error fetching stamps:", error);
+    }
+  };
+
   useEffect(() => {
-    fetch("http://localhost:8000/api/auth/stamps/")
-      .then((res) => res.json())
-      .then((data) => setSavedStamps(data))
-      .catch((err) => console.error("Error fetching stamps:", err));
+    fetchStamps();
   }, []);
-  
-  
-  //Load saved stamps on component mount
-  // useEffect(() => {
-  //   const storedStamps = JSON.parse(localStorage.getItem("stamps")) || [];
-  //   setSavedStamps(storedStamps);
-  // }, []);
-  
-  const handleDashboard = () =>
-  {
+
+  const handleDashboard = () => {
     navigate("/dashboard");
-  }
+  };
 
   return (
     <div className="stamp-editor-container">
@@ -252,14 +258,17 @@ const StampPage = () => {
       </div>
 
       <button className="save-btn" onClick={saveStamp}>Save Stamp</button>
-     <button className="save-btn" onClick={handleDashboard}>Return To Dashboard</button> 
+      <button className="save-btn" onClick={handleDashboard}>Return To Dashboard</button> 
+      
 
       <div className="saved-stamps">
         <h3>All Created Stamps</h3>
+       
         <div className="stamps-list">
           {savedStamps.map((stamp, index) => (
             <div key={index} className="stamp-thumbnail">
-              <img src={stamp} alt={`Stamp ${index + 1}`} />
+              <img src={stamp.image} alt={stamp.name} />
+              <p>{stamp.name}</p>
             </div>
           ))}
         </div>
@@ -269,4 +278,3 @@ const StampPage = () => {
 };
 
 export default StampPage;
-
