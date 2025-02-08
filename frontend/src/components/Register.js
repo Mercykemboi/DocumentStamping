@@ -121,6 +121,7 @@ const RegisterModal = () => {
             <input
               type="text"
               placeholder="Username"
+              className="inputUser"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />

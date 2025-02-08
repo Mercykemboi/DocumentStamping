@@ -1,88 +1,153 @@
-/* General reset */
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  display: flex;
-  justify-content: center; /* Center the card horizontally */
-  align-items: center; /* Center the card vertically */
-  background-color: #f8f9fa; /* Light background for contrast */
-}
-
-/* Card container styling */
 .document-viewer-card {
-  display: flex;
-  flex-direction: row;
-  width: 90%; /* Card width */
-  max-width: 1200px; /* Maximum width for larger screens */
-  height: 90vh; /* Card height */
-  background: #ffffff; /* Card background */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  border-radius: 8px; /* Rounded corners */
-  overflow: hidden; /* Clip content that overflows */
-}
-
-/* Flex container for side-by-side layout */
-.document-viewer-container {
-  display: flex;
-  flex-direction: row; /* Ensure they are side by side */
-  height: 100%;
-}
-
-/* Sidebar styling */
-.sidebar {
-  flex: 1; /* Sidebar takes up 1/4th of the space */
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-right: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-/* Canvas container styling */
-.canvas-container {
-  flex: 3; /* Canvas takes up 3/4ths of the space */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: auto; /* Enable scrolling for large documents */
   background-color: #ffffff;
-  padding: 10px; /* Add padding for better alignment */
+  max-width: 100%;
+  margin: 30px auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Canvas element styling */
-.document-canvas {
-  border: 1px solid #ccc;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Maintain aspect ratio */
+.document-viewer-container {
+  text-align: center;
 }
-.save-button {
-  display: block;
-  width: 100%;
-  padding: 12px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #007bff;
+
+h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.save-btn,
+.back-btn {
+  padding: 12px 25px;
+  font-size: 1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #007bff;
+}
+
+.back-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+.otp-section {
+  margin-top: 30px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.otp-section h3 {
+  font-size: 1.5rem;
+  color: #495057;
+  margin-bottom: 20px;
+}
+
+.otp-input-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.otp-input {
+  width: 70%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.otp-input:focus {
+  border-color: #007bff;
+}
+
+.otp-verify-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.otp-verify-btn:hover {
+  background-color: #0056b3;
+}
+
+.otp-request-section {
+  margin-top: 10px;
+}
+
+.otp-request-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.save-button:hover {
-  background-color: #0056b3;
+.otp-request-btn:hover {
+  background-color: #218838;
 }
-.canvas-container.scrollable {
+
+.saved-stamps {
+  margin-top: 30px;
+}
+
+.saved-stamps h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.stamps-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.stamp-thumbnail {
+  text-align: center;
+  max-width: 120px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.stamp-thumbnail img {
   width: 100%;
-  height: 80vh;
-  overflow: auto;
-  border: 1px solid #ddd;
-  position: relative;
+  max-width: 100px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-
+.stamp-thumbnail p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #495057;
+  font-weight: 500;
+}
