@@ -159,7 +159,7 @@ const Dashboard = () => {
                 <tr>
                   <th>File Name</th>
                   <th>Created At</th>
-                  <th>Stamped</th>
+                  {/* <th>Stamped</th> */}
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -168,7 +168,7 @@ const Dashboard = () => {
                   <tr key={doc.id}>
                     <td>{doc.file.split("/").pop()}</td>
                     <td>{new Date(doc.created_at).toLocaleString()}</td>
-                    <td>{doc.stamped ? "Yes" : "No"}</td>
+                    {/* <td>{doc.stamped ? "Yes" : "No"}</td> */}
                     <td>
                     <button
                 onClick={() => handleView(doc.id)}

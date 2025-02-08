@@ -42,9 +42,9 @@ label {
   color: #555;
 }
 
-input[type="color"],
-input[type="text"],
-input[type="number"],
+.control-group.input[type="color"],
+.control-group.input[type="text"],
+.control-group.input[type="number"],
 select {
   width: 100%;
   padding: 8px;
@@ -77,7 +77,7 @@ button:hover {
 
 .save-btn {
   padding: 10px 30px;
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 6px;
@@ -88,7 +88,7 @@ button:hover {
 }
 
 .save-btn:hover {
-  background-color: #218838;
+  background-color: #007bff;
 }
 
 .saved-stamps {
