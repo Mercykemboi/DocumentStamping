@@ -16,6 +16,7 @@ class Stamp(models.Model):
     text_x = models.IntegerField(default=0)  # X position of text
     text_y = models.IntegerField(default=0)  # Y position of text
     created_at = models.DateTimeField(auto_now_add=True)
+    serial_number = models.CharField(max_length=20, default='0000')
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='stamps/', default='stamps/default.png', blank=True, null=True)
 
