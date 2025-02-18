@@ -19,7 +19,21 @@ import os
 from PIL import Image as PILImage
 from datetime import datetime
 from PIL import ImageDraw, ImageFont
-
+import cv2
+import pytesseract
+import fitz  # PyMuPDF for PDFs
+import cv2
+import pytesseract
+import numpy as np
+from pdf2image import convert_from_path
+from rest_framework.parsers import MultiPartParser, FormParser
+from urllib.parse import urlparse
+import os
+import re
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from pyzbar.pyzbar import decode  # Importing decode function for QR scanning
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 # Temporary storage for OTPs (you can use Redis or a model in production)
 OTP_STORAGE = {}
 
@@ -78,6 +92,7 @@ class VerifyOTPView(APIView):
 
     def post(self, request):
         user = request.user
+        print(user)
 
         if not user or not user.is_authenticated:
             return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -266,3 +281,141 @@ class StampDocumentView(APIView):
     def generate_serial_number(self):
         """Generate a unique serial number."""
         return datetime.now().strftime("%Y%m%d%H%M%S") + ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+
+
+
+class VerifyStampedDocumentView(APIView):
+    """Verifies the authenticity of a stamped document by checking serial number and QR code."""
+
+    authentication_classes = [JWTAuthentication]  
+    permission_classes = [IsAuthenticated]  
+    parser_classes = (MultiPartParser, FormParser)  
+
+    def post(self, request):
+        """Handle document verification."""
+        
+        print("User:", request.user)
+        print("Authenticated:", request.user.is_authenticated)
+
+        uploaded_file = request.FILES.get("document")
+        if not uploaded_file:
+            return JsonResponse({"error": "No document uploaded"}, status=400)
+
+        print(f"Processing file: {uploaded_file.name}")
+
+        try:
+            # ✅ Step 2: Convert PDF/Image to NumPy Array
+            img = self.load_image(uploaded_file)
+            if img is None or img.size == 0:
+                return JsonResponse({"error": "Failed to process image"}, status=400)
+
+            # ✅ Step 3: Extract Serial Number (OCR)
+            extracted_serial = self.extract_serial_number(img)
+            print(f"Extracted Serial Number: {extracted_serial}")
+
+            # ✅ Step 4: Extract QR Code Data
+            extracted_qr_data = self.extract_qr_code(img)
+            print(f"Extracted QR Code: {extracted_qr_data}")
+
+            # ✅ Step 5: Verify Against Database
+            verification_result = self.verify_details(extracted_serial, extracted_qr_data)
+
+            return JsonResponse(verification_result, status=200)
+
+        except Exception as e:
+            print(f"Verification Error: {e}")
+            return JsonResponse({"error": "Internal server error", "details": str(e)}, status=500)
+
+    def load_image(self, uploaded_file):
+        """Loads an image from an uploaded file (PDF or image formats)."""
+        try:
+            if uploaded_file.name.lower().endswith('.pdf'):
+                images = convert_from_bytes(uploaded_file.read())
+                if not images:
+                    print("❌ Error: No pages found in PDF")
+                    return None
+                img = np.array(images[0])  # Convert first page to NumPy array
+            else:
+                file_bytes = np.frombuffer(uploaded_file.read(), np.uint8)
+                img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+                if img is None:
+                    print("❌ Error: Unable to decode image")
+                    return None
+            return img
+        except Exception as e:
+            print(f"❌ Error loading image: {e}")
+            return None
+
+    def extract_serial_number(self, img):
+     """Extracts serial number from the stamped document using OCR."""
+     try:
+         if img is None or img.size == 0:
+            return "Image processing failed"
+
+        # ✅ Convert image to grayscale
+         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+  
+        # ✅ Apply adaptive thresholding to enhance text contrast
+         gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
+
+        # ✅ Define OCR settings
+         custom_oem_psm_config = r'--oem 3 --psm 6'
+
+        # ✅ Extract text using OCR
+         extracted_text = pytesseract.image_to_string(gray, config=custom_oem_psm_config).strip()
+         print(f"🔍 Raw OCR Output: {extracted_text}")
+
+        
+         match = re.search(r'\b\d{14}[A-Z]+\b', extracted_text)
+         serial_number = match.group(0) if match else "No serial number detected"
+
+         print(f"✅ Extracted Serial Number: {serial_number}")
+         return serial_number
+     except Exception as e:
+        print(f"❌ OCR Extraction Error: {e}")
+        return "OCR extraction error"
+
+    def extract_qr_code(self, img):
+        """Extracts and decodes QR code using OpenCV and pyzbar."""
+        try:
+            detected_qrs = decode(img)
+            if detected_qrs:
+                return detected_qrs[0].data.decode('utf-8') 
+            return None
+        except Exception as e:
+            print(f"❌ QR Extraction Error: {e}")
+            return None
+
+    def verify_details(self, extracted_serial, extracted_qr_data):
+     """Verifies extracted details with stored records but also returns extracted data."""
+     try:
+         if not extracted_serial or extracted_serial == "No serial number detected":
+             print("❌ Serial Number Extraction Failed")
+             return {
+                "status": "❌ Verification Failed",
+                "message": "Serial number extraction failed.",
+                "serial_number": extracted_serial,
+                "qr_code": extracted_qr_data  
+             }
+
+         print("✅ Document Processed Successfully")
+         return {
+            "status": "✅ Document Processed",
+            "message": "Serial number and QR code extracted successfully.",
+            "serial_number": extracted_serial,  
+            "qr_code": extracted_qr_data  
+         }
+
+     except Exception as e:
+        print(f"❌ Verification Error: {e}")
+        return {
+            "status": "❌ Verification Failed",
+            "message": "Internal error during verification.",
+            "serial_number": None,
+            "qr_code": None
+        }
+
+
+
+
+
