@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./dashboard.css";
 
 const Dashboard = () => {
+  const storage = localStorage.getItem("authToken");
   const savedUsername = localStorage.getItem("username");
   const [uploadedCount, setUploadedCount] = useState(0);
   const [deletedCount, setDeletedCount] = useState(0);
   const [stampedCount, setStampedCount] = useState(0);
   const [documents, setDocuments] = useState([]);
+  const [verificationResult, setVerificationResult] = useState(null);
   const navigate = useNavigate();
-  const [setUploadStatus] = useState("");
-  // const canvasRef = useRef(null);
-
-
+  const [uploadStatus, setUploadStatus] = useState("");
+  
   const fetchDocuments = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/api/auth/viewDocuments/", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken",data.access)}`,
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
 
@@ -40,7 +40,7 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken",data.access);
+    localStorage.removeItem("authToken");
     navigate("/");
   };
 
@@ -52,7 +52,7 @@ const Dashboard = () => {
       return;
     }
 
-    // setUploadStatus("Uploading...");
+    setUploadStatus("Uploading...");
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -61,21 +61,21 @@ const Dashboard = () => {
       const response = await fetch("http://127.0.0.1:8000/api/auth/documents/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken",data.access)}`,
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: formData,
       });
 
       if (response.ok) {
         const data = await response.json();
-        // setUploadStatus("File uploaded successfully!");
+        setUploadStatus("File uploaded successfully!");
         setDocuments((prevDocs) => [data, ...prevDocs]);
       } else {
-        // setUploadStatus("Failed to upload file.");
+        setUploadStatus("Failed to upload file.");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      // setUploadStatus("An error occurred while uploading the file.");
+      setUploadStatus("An error occurred while uploading the file.");
     }
   };
 
@@ -86,7 +86,7 @@ const Dashboard = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken",data.access)}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         }
       );
@@ -101,27 +101,81 @@ const Dashboard = () => {
       console.error("Error deleting document:", error);
     }
   };
-  const handleView = async (documentId) => {
+
+  const handleView = (documentId) => {
     navigate(`/document/${documentId}`);
-};
+  };
+
+  const [extractedSerial, setExtractedSerial] = useState(""); // Store extracted serial
+  const [extractedQr, setExtractedQr] = useState(""); // Store extracted QR
+  
+  const handleVerify = async (event) => {
+      const selectedFile = event.target.files[0];
+  
+      if (!selectedFile) {
+          setUploadStatus("No file selected.");
+          return;
+      }
+  
+      const formData = new FormData();
+      formData.append("document", selectedFile);
+      console.log(selectedFile);
+  
+      const token = storage; // Retrieve token from localStorage
+  
+      if (!token) {
+          alert("❌ Authentication error: No token found. Please log in again.");
+          return;
+      }
+  
+      try {
+          const response = await fetch("http://127.0.0.1:8000/api/auth/verifyDocument/", {
+              method: "POST",
+              headers: {
+                  Authorization: `Bearer ${token}`,  // Add Authorization header
+              },
+              body: formData,
+          });
+  
+          const data = await response.json();
+          console.log(data);
+  
+          if (!response.ok) {
+              console.error("Verification Error:", data);
+              alert(`❌ Verification Failed: ${data.message || "Something went wrong."}`);
+              return;
+          }
+  
+          // ✅ Set extracted serial number & QR code
+          setExtractedSerial(data.serial_number || "No serial number found");
+          setExtractedQr(data.qr_code || "No QR code found");
+  
+          alert(`✅ Verification Successful`);
+      } catch (error) {
+          console.error("❌ Error verifying document:", error);
+          alert("❌ Verification failed due to a network or server error.");
+      }
+  };
+  
+
+
+  
+
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
         <div className="logo">Digital Stamping System</div>
         <nav className="menu">
           <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-          <button  onClick={fetchDocuments}>
-          Documents
-        </button>
-        <button onClick={() => navigate("/")}>Home</button>
-        <button onClick={() => navigate("/stamp")}>Create Stamp</button>
+          <button onClick={fetchDocuments}>Documents</button>
+          <button onClick={() => navigate("/")}>Home</button>
+          <button onClick={() => navigate("/stamp")}>Create Stamp</button>
         </nav>
       </aside>
 
       <main className="main-content">
         <header className="dashboard-header">
           <div>
-            {/* <h1>Dashboard</h1> */}
             <p>Hello, {savedUsername}!</p>
           </div>
           <button className="logout-btn" onClick={handleLogout}>Logout</button>
@@ -159,7 +213,6 @@ const Dashboard = () => {
                 <tr>
                   <th>File Name</th>
                   <th>Created At</th>
-                  {/* <th>Stamped</th> */}
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -168,16 +221,11 @@ const Dashboard = () => {
                   <tr key={doc.id}>
                     <td>{doc.file.split("/").pop()}</td>
                     <td>{new Date(doc.created_at).toLocaleString()}</td>
-                    {/* <td>{doc.stamped ? "Yes" : "No"}</td> */}
                     <td>
-                    <button
-                onClick={() => handleView(doc.id)}
-                style={{ marginRight: "10px" }}
-              >
-                View
-              </button>
-
-
+                      <button onClick={() => handleView(doc.id)} style={{ marginRight: "10px" }}>
+                        View
+                      </button>
+                      
                       <button onClick={() => handleDelete(doc.id)}>Delete</button>
                     </td>
                   </tr>
@@ -186,6 +234,20 @@ const Dashboard = () => {
             </table>
           )}
         </section>
+
+        <section className="verify-section">
+          <h2>Verify Document</h2>
+          <label className="verify-btn">
+            Choose File to Verify
+            <input type="file" onChange={handleVerify} hidden />
+          </label>
+          {verificationResult && <p className="verification-status">{verificationResult}</p>}
+          <div className="extracted-data mt-3">
+        <p><strong>Extracted Serial Number:</strong> {extractedSerial}</p>
+        <p><strong>Extracted QR Code:</strong> {extractedQr}</p>
+    </div>
+        </section>
+        
       </main>
     </div>
   );

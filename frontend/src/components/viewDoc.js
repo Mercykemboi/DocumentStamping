@@ -214,10 +214,20 @@ const stampDocument = async () => {
           console.log("Stamped Document URL:", data.stamped_url);
           
           navigate("/dashboard");
-          const downloadLink = document.createElement('a');
-        downloadLink.href = data.stamped_url;
-        downloadLink.download = data.stamped_url.split('/').pop();  // Optional: set filename from URL
-        downloadLink.click(); 
+          const fileResponse = await fetch(data.stamped_url);
+          const blob = await fileResponse.blob();
+          const blobUrl = window.URL.createObjectURL(blob);
+  
+          // Create a download link and trigger the download
+          const downloadLink = document.createElement("a");
+          downloadLink.href = blobUrl;
+          downloadLink.download = data.stamped_url.split("/").pop();
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+  
+          // Clean up the blob URL
+          window.URL.revokeObjectURL(blobUrl);
           
       } else {
           alert(data.error || "Error stamping document");
@@ -226,6 +236,8 @@ const stampDocument = async () => {
       console.error("Error stamping document:", error);
   }
 };
+
+
 
 
 
