@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf";
 import "./documentViewer.css";
 
+
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const DocumentViewer = () => {
@@ -18,6 +19,7 @@ const DocumentViewer = () => {
   const [draggingStampIndex, setDraggingStampIndex] = useState(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [selectedStampId, setSelectedStampId] = useState(null);
+  const [serialNumber, setSerialNumber] = useState('');
 
   // OTP state
   const [otp, setOtp] = useState("");
@@ -54,9 +56,17 @@ const DocumentViewer = () => {
     const img = new Image();
     img.src = stamp.url;
     img.onload = () => {
-      ctx.drawImage(img, stamp.x, stamp.y, stamp.width, stamp.height);
+        ctx.drawImage(img, stamp.x, stamp.y, stamp.width, stamp.height);
+
+        // Overlay Serial Number
+        if (serialNumber) {
+            ctx.font = "bold 20px Arial";
+            ctx.fillStyle = "red";
+            ctx.fillText(`SN: ${serialNumber}`, stamp.x, stamp.y + stamp.height + 20);
+        }
     };
-  }, []);
+}, [serialNumber]);
+
 
   const renderDocument = useCallback(() => {
     const canvas = canvasRef.current;
@@ -134,43 +144,7 @@ const DocumentViewer = () => {
     setDraggingStampIndex(null);
   };
 
-  // const handleSave = async () => {
-  //   const canvas = canvasRef.current;
-  //   const stampedImage = canvas.toDataURL("image/png");
 
-  //   const formData = new FormData();
-  //   formData.append("file", stampedImage);
-
-  //   try {
-  //     const response = await fetch(
-  //       `http://127.0.0.1:8000/api/auth/documents/${id}/stamp/`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-  //         },
-  //         body: formData,
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       alert("Document stamped and saved successfully!");
-  //       const data = await response.json();
-  //       const stampedFileUrl = data.file_url;
-
-  //       const downloadLink = document.createElement("a");
-  //       downloadLink.href = `http://127.0.0.1:8000${stampedFileUrl}`;
-  //       downloadLink.download = "stamped_document.pdf";
-  //       downloadLink.click();
-
-  //       navigate("/dashboard");
-  //     } else {
-  //       console.error("Failed to save stamped document");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error saving stamped document:", error);
-  //   }
-  // }; 
   const requestOTP = async () => {
     try {
       const response = await fetch(
@@ -217,6 +191,7 @@ const DocumentViewer = () => {
     }
 };
 
+
 const stampDocument = async () => {
   try {
       const response = await fetch("http://127.0.0.1:8000/api/auth/stamp/", {
@@ -228,20 +203,22 @@ const stampDocument = async () => {
           body: JSON.stringify({
               stamp_id: selectedStampId,
               document_url: documentUrl,
-              // x: 150,
-              // y: 200,
           }),
       });
 
       const data = await response.json();
       if (response.ok) {
-          alert("Stamp applied successfully!");
+          setSerialNumber(data.serial_number);  // Store serial number
+          alert(`Stamp applied successfully! Serial Number: ${data.serial_number}`);
+
           console.log("Stamped Document URL:", data.stamped_url);
-          navigate("/dashboard")
-        const downloadLink = document.createElement('a');
+          
+          navigate("/dashboard");
+          const downloadLink = document.createElement('a');
         downloadLink.href = data.stamped_url;
         downloadLink.download = data.stamped_url.split('/').pop();  // Optional: set filename from URL
         downloadLink.click(); 
+          
       } else {
           alert(data.error || "Error stamping document");
       }
@@ -249,6 +226,7 @@ const stampDocument = async () => {
       console.error("Error stamping document:", error);
   }
 };
+
 
 
 const handleStampSelection = (stampId) => {
@@ -277,11 +255,17 @@ const handleStampSelection = (stampId) => {
         y: 100,
         width: 150,
         height: 150,
+        serialNumber: serialNumber,
     };
 
-    setStampsOnDocument((prevStamps) => [...prevStamps, newStamp]);
+    setStampsOnDocument((prevStamps) => [...prevStamps, newStamp]); 
     setSelectedStampId(stampId); // Store the selected stamp ID
 };
+
+const handleSerialNumberChange = (event) => {
+  setSerialNumber(event.target.value); // Update the serial number as the user types
+};
+
 
 
 useEffect(() => {
@@ -311,7 +295,15 @@ useEffect(() => {
     <div className="document-viewer-card">
       <div className="document-viewer-container">
         <h2>Stamp Designer</h2>
-        
+          {/* Serial Number Input Field */}
+          <div className="serial-number-section">
+  {serialNumber && (
+    <p>
+      <strong>Serial Number:</strong> {serialNumber}
+    </p>
+  )}
+</div>
+
         <button onClick={handleSave}>Save Stamped Document</button>
         <button onClick={() => navigate("/dashboard")}>Back to Dashboard</button>
 
