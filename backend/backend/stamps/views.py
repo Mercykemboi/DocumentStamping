@@ -178,14 +178,14 @@ class StampDocumentView(APIView):
             return self.stamp_pdf(document_url, stamp_image_path, position_x, position_y, user, serial_number)
         else:
             return self.stamp_image(document_url, stamp_image_path, position_x, position_y, user, serial_number)
-
     def stamp_pdf(self, document_url, stamp_image_path, position_x, position_y, user, serial_number):
      """Stamp a PDF document and embed the serial number at the bottom."""
+    
     # Load the PDF
      parsed_url = urlparse(document_url)
      document_path = parsed_url.path.lstrip('/')
      if document_path.startswith('media/'):
-        document_path = document_path[len('media/'):]
+         document_path = document_path[len('media/'):]
 
      print("🚀 Starting image stamping process...")
 
@@ -207,12 +207,19 @@ class StampDocumentView(APIView):
      page_width = page.rect.width
      page_height = page.rect.height
 
-    # Position text at the bottom center of the page
+    # Position serial number at the bottom center
      text_x = page_width / 2 - 50  # Centered horizontally
      text_y = page_height - 30  # 30 units from the bottom
 
-    # Insert the serial number at the bottom
-     page.insert_text((text_x, text_y), f"Serial No: {serial_number}", fontsize=12, color=(1, 0, 0))
+    # Insert serial number at the bottom
+     page.insert_text(
+         (text_x, text_y), 
+         f"Serial No: {serial_number}", 
+         fontsize=12, 
+          color=(0, 0, 0)
+     )
+
+     print(f"✅ Serial number '{serial_number}' inserted at ({text_x}, {text_y})")
 
     # Save the stamped document
      stamped_pdf_bytes = BytesIO()
@@ -227,7 +234,14 @@ class StampDocumentView(APIView):
      saved_path = default_storage.save(stamped_pdf_path, stamped_file)
 
      stamped_url = f"http://127.0.0.1:8000/media/{saved_path}"
-     return {"message": "Document stamped successfully!", "stamped_url": stamped_url, "serial_number": serial_number}
+
+     print(f"🎉 Document stamped successfully! Access it at: {stamped_url}")
+
+     return {
+        "message": "Document stamped successfully!", 
+        "stamped_url": stamped_url, 
+        "serial_number": serial_number
+     }
 
     def stamp_image(self, document_url, stamp_image_path, position_x, position_y, user, serial_number):
         """Stamp an image document and add the serial number at the bottom."""
@@ -372,34 +386,41 @@ class VerifyStampedDocumentView(APIView):
             print(f"❌ Error loading image: {e}")
             return None
 
+  
+
     def extract_serial_number(self, img):
      """Extracts serial number from the stamped document using OCR."""
      try:
          if img is None or img.size == 0:
-            return "Image processing failed"
+             return "Image processing failed"
 
         # ✅ Convert image to grayscale
          gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-  
-        # ✅ Apply adaptive thresholding to enhance text contrast
-         gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
 
-        # ✅ Define OCR settings
-         custom_oem_psm_config = r'--oem 3 --psm 6'
+        # ✅ Crop the bottom 15% of the document (where serial number is likely to be)
+         h, w = gray.shape
+         bottom_section = gray[int(h * 0.85):h, :]  
+
+         # ✅ Apply adaptive thresholding
+         bottom_section = cv2.adaptiveThreshold(bottom_section, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+                                               cv2.THRESH_BINARY, 31, 2)
 
         # ✅ Extract text using OCR
-         extracted_text = pytesseract.image_to_string(gray, config=custom_oem_psm_config).strip()
-         print(f"🔍 Raw OCR Output: {extracted_text}")
+         extracted_text = pytesseract.image_to_string(bottom_section, lang='eng', config='--oem 3 --psm 6').strip()
+         print(f"🔍 OCR Output from Bottom Section:\n{extracted_text}")
 
+        # ✅ More flexible regex for serial numbers
+         serial_number_pattern = r'(?:Serial\s*Number[:\-]?\s*|S/N[:\-]?\s*)([A-Za-z0-9]+)'
         
-         match = re.search(r'\b\d{14}[A-Z]+\b', extracted_text)
-         serial_number = match.group(0) if match else "No serial number detected"
+         match = re.search(serial_number_pattern, extracted_text, re.IGNORECASE)
 
+         serial_number = match.group(1) if match else "No serial number detected"
          print(f"✅ Extracted Serial Number: {serial_number}")
+
          return serial_number
      except Exception as e:
-        print(f"❌ OCR Extraction Error: {e}")
-        return "OCR extraction error"
+         print(f"❌ OCR Extraction Error: {e}")
+         return "OCR extraction error"
 
     def extract_qr_code(self, img):
         """Extracts and decodes QR code using OpenCV and pyzbar."""
