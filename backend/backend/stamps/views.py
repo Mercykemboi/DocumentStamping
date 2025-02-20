@@ -29,6 +29,10 @@ from pdf2image import convert_from_path
 from rest_framework.parsers import MultiPartParser, FormParser
 from urllib.parse import urlparse
 import os
+from pdf2image import convert_from_bytes
+
+
+
 import re
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from pyzbar.pyzbar import decode  # Importing decode function for QR scanning
@@ -176,38 +180,54 @@ class StampDocumentView(APIView):
             return self.stamp_image(document_url, stamp_image_path, position_x, position_y, user, serial_number)
 
     def stamp_pdf(self, document_url, stamp_image_path, position_x, position_y, user, serial_number):
-        """Stamp a PDF document."""
-        # Load the PDF
-        parsed_url = urlparse(document_url)
-        document_path = os.path.join(settings.MEDIA_ROOT, parsed_url.path)
+     """Stamp a PDF document and embed the serial number at the bottom."""
+    # Load the PDF
+     parsed_url = urlparse(document_url)
+     document_path = parsed_url.path.lstrip('/')
+     if document_path.startswith('media/'):
+        document_path = document_path[len('media/'):]
 
-        with default_storage.open(document_path, "rb") as doc_file:
-            pdf_bytes = BytesIO(doc_file.read())
+     print("🚀 Starting image stamping process...")
 
-        pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
+     with default_storage.open(document_path, "rb") as doc_file:
+         pdf_bytes = BytesIO(doc_file.read())
 
-        # Load the stamp image
-        with default_storage.open(stamp_image_path, 'rb') as stamp_file:
-            stamp_image_bytes = BytesIO(stamp_file.read())
+     pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
 
-        # Apply stamp to the first page
-        page = pdf_document[0]
-        page.insert_image(fitz.Rect(position_x, position_y, position_x + 150, position_y + 150), stream=stamp_image_bytes)
+    # Load the stamp image
+     with default_storage.open(stamp_image_path, 'rb') as stamp_file:
+         stamp_image_bytes = BytesIO(stamp_file.read())
 
-        # Save the stamped document
-        stamped_pdf_bytes = BytesIO()
-        pdf_document.save(stamped_pdf_bytes)
-        pdf_document.close()
+    # Apply stamp to the first page
+     page = pdf_document[0]
+     stamp_rect = fitz.Rect(position_x, position_y, position_x + 150, position_y + 150)
+     page.insert_image(stamp_rect, stream=stamp_image_bytes)
 
-        stamped_pdf_bytes.seek(0)
-        stamped_file = ContentFile(stamped_pdf_bytes.read(), name=f"stamped_document_{serial_number}.pdf")
+    # Get page width and height
+     page_width = page.rect.width
+     page_height = page.rect.height
 
-        # Save to storage
-        stamped_pdf_path = f"stamped_documents/stamped_document_{serial_number}.pdf"
-        saved_path = default_storage.save(stamped_pdf_path, stamped_file)
+    # Position text at the bottom center of the page
+     text_x = page_width / 2 - 50  # Centered horizontally
+     text_y = page_height - 30  # 30 units from the bottom
 
-        stamped_url = default_storage.url(saved_path)
-        return {"message": "Document stamped successfully!", "stamped_url": stamped_url, "serial_number": serial_number}
+    # Insert the serial number at the bottom
+     page.insert_text((text_x, text_y), f"Serial No: {serial_number}", fontsize=12, color=(1, 0, 0))
+
+    # Save the stamped document
+     stamped_pdf_bytes = BytesIO()
+     pdf_document.save(stamped_pdf_bytes)
+     pdf_document.close()
+
+     stamped_pdf_bytes.seek(0)
+     stamped_file = ContentFile(stamped_pdf_bytes.read(), name=f"stamped_document_{serial_number}.pdf")
+
+    # Save to storage
+     stamped_pdf_path = f"stamped_documents/stamped_document_{serial_number}.pdf"
+     saved_path = default_storage.save(stamped_pdf_path, stamped_file)
+
+     stamped_url = f"http://127.0.0.1:8000/media/{saved_path}"
+     return {"message": "Document stamped successfully!", "stamped_url": stamped_url, "serial_number": serial_number}
 
     def stamp_image(self, document_url, stamp_image_path, position_x, position_y, user, serial_number):
         """Stamp an image document and add the serial number at the bottom."""
@@ -330,7 +350,13 @@ class VerifyStampedDocumentView(APIView):
         """Loads an image from an uploaded file (PDF or image formats)."""
         try:
             if uploaded_file.name.lower().endswith('.pdf'):
-                images = convert_from_bytes(uploaded_file.read())
+                pdf_bytes = uploaded_file.read()  # Read PDF file into bytes
+                if not pdf_bytes:
+                 raise ValueError("❌ Error: PDF file is empty!")
+
+                print(f"✅ Loaded PDF size: {len(pdf_bytes)} bytes")  # Debugging output
+                images = convert_from_bytes(pdf_bytes, poppler_path=r"C:\Program Files\poppler-24.08.0\Library\bin")
+
                 if not images:
                     print("❌ Error: No pages found in PDF")
                     return None
